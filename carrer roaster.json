@@ -1,0 +1,218 @@
+{
+  "name": "carrer roaster",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "career-analysis",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -176,
+        48
+      ],
+      "id": "18b20fde-65c3-43d4-a926-1f221aa7f5d6",
+      "name": "Webhook",
+      "webhookId": "02cd4ac6-61cc-4dff-b326-6af88e0b0a69"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        864,
+        48
+      ],
+      "id": "d70feb96-e8e3-4484-a08a-945f38025557",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "binaryPropertyName": "resume",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        80,
+        208
+      ],
+      "id": "a7905b28-6879-4dd8-8a9b-a7f7bbffcccf",
+      "name": "Extract from File",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "url": "=https://api.github.com/users/{{ $json.body.github.replace('https://github.com/','').replace('/','') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        80,
+        16
+      ],
+      "id": "019f2863-2a6a-4915-83b3-afe7aa5ac6ee",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4.1-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4.1-MINI"
+        },
+        "responses": {
+          "values": [
+            {
+              "content": "=You are an expert AI career evaluator.\n\nIMPORTANT RULES:\n\n* Use ONLY the candidate information provided below\n* NEVER invent names\n* NEVER invent roles\n* NEVER create fictional candidates\n* Extract candidate name from resume text\n* Use target role from user input\n* Use GitHub data only to support analysis\n* If information is missing, say \"Not Found\"\n\nCandidate Resume:\n\n{{$json.text}}\n\nGitHub Username:\n\n{{$json.login}}\n\nGitHub Bio:\n\n{{$json.bio}}\n\nPublic Repositories:\n\n{{$json.public_repos}}\n\nFollowers:\n\n{{$json.followers}}\n\nTarget Role:\n\n{{$('Webhook').item.json.body.role}}\n\nAnalyze and provide:\n\n1. Summary\n\n2. ATS Score\n\n3. Internship Readiness\n\n4. Cooked Percentage\n\n5. Strengths\n\n6. Weaknesses\n\n7. Missing Skills\n\n8. Career Roadmap\n\n9. Project Suggestions\n\n10. Funny Roast Section\n\nRules:\n\n* Keep the same detailed style\n* Provide explanations for scores\n* Strengths should reference actual resume/projects\n* Weaknesses should compare resume vs target role\n* Missing skills should be realistic\n* Project suggestions should address weaknesses\n* Roast section should reference actual profile data only\n* Keep responses detailed\n\nReturn ONLY HTML using:\n\nh2\nh3\np\ntable\ntr\ntd\nul\nli\nstrong\n\n\n"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 2.3,
+      "position": [
+        432,
+        -16
+      ],
+      "id": "9af79d32-fbab-4f84-9723-4062220a445b",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "2WCndBkCDkSDE1Ox",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        320,
+        112
+      ],
+      "id": "5237d866-63c8-4cbe-9d8e-519529730a41",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "jsCode": "const text =\n$input.first()\n.json\n.output[0]\n.content[0]\n.text;\n\nconst cleaned =\ntext\n.replace(/```html/g,'')\n.replace(/```/g,'');\n\nreturn [\n{\njson:{\nreport: cleaned\n}\n}\n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        656,
+        160
+      ],
+      "id": "c6b291bc-0041-4a6a-b859-1cfdf867c3af",
+      "name": "Code in JavaScript"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Respond to Webhook": {
+      "main": [
+        []
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Code in JavaScript",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code in JavaScript": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "71d249e2-6b8a-4894-ae1e-c3a3872f0ccc",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "2243358d752a5761fc563d0ec0eae252fd8c591aa29d5b7540151e2b16c552b5"
+  },
+  "nodeGroups": [],
+  "id": "8imiSGSfq0Kx6vCK",
+  "tags": []
+}
