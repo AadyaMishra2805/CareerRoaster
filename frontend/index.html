@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Career Roast AI</title>
+
+<link rel="stylesheet"
+href="style.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<div class="card">
+
+<h1>
+Career Roast AI 💀
+</h1>
+
+<p class="subtitle">
+
+Upload your resume and GitHub profile.
+Get roasted by AI.
+
+</p>
+
+<form id="careerForm">
+
+<input
+type="text"
+id="name"
+placeholder="Full Name"
+required>
+
+<input
+type="email"
+id="email"
+placeholder="Email Address"
+required>
+
+<input
+type="text"
+id="github"
+placeholder="GitHub Username"
+required>
+
+<select id="role" required>
+
+<option value="">
+Select Target Role
+</option>
+
+<option>
+AI Engineer
+</option>
+
+<option>
+ML Engineer
+</option>
+
+<option>
+Data Scientist
+</option>
+
+<option>
+Backend Developer
+</option>
+
+<option>
+Frontend Developer
+</option>
+
+<option>
+Full Stack Developer
+</option>
+
+</select>
+
+<input
+type="file"
+id="resume"
+accept=".pdf"
+required>
+
+<button type="submit">
+
+Analyze My Career 💀
+
+</button>
+
+</form>
+
+<div id="status"></div>
+
+<div id="report"></div>
+
+</div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
