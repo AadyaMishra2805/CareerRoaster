@@ -2,112 +2,108 @@
 <html lang="en">
 
 <head>
-
 <meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Career Roast AI</title>
 
-<link rel="stylesheet"
-href="style.css">
-
+<link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
 <div class="container">
+  <div class="card">
 
-<div class="card">
+    <h1>Career Roast AI 💀</h1>
 
-<h1>
-Career Roast AI 💀
-</h1>
+    <p class="subtitle">
+      Upload your resume and optionally add your GitHub.
+      Get brutally honest AI feedback on your career.
+    </p>
 
-<p class="subtitle">
+    <form id="careerForm">
 
-Upload your resume and GitHub profile.
-Get roasted by AI.
+      <!-- NAME -->
+      <input
+        type="text"
+        id="name"
+        placeholder="Full Name"
+        required
+      >
 
-</p>
+      <!-- EMAIL -->
+      <input
+        type="email"
+        id="email"
+        placeholder="Email Address"
+        required
+      >
 
-<form id="careerForm">
+      <!-- DOMAIN -->
+      <select id="field" required>
+        <option value="">Select Career Domain</option>
+        <option>Engineering</option>
+        <option>Healthcare</option>
+        <option>Business</option>
+        <option>Education</option>
+        <option>Law</option>
+        <option>Finance</option>
+        <option>Research</option>
+        <option>Design</option>
+        <option>Government</option>
+        <option>Other</option>
+      </select>
 
-<input
-type="text"
-id="name"
-placeholder="Full Name"
-required>
+      <!-- ROLE -->
+      <input
+        type="text"
+        id="role"
+        placeholder="Target Role (e.g. AI Engineer, Lawyer, Designer)"
+        required
+      >
 
-<input
-type="email"
-id="email"
-placeholder="Email Address"
-required>
+      <!-- GITHUB OPTIONAL (CLEAN VERSION) -->
+      <div class="optional-section">
 
-<input
-type="text"
-id="github"
-placeholder="GitHub Username"
-required>
+        <label for="github">
+          GitHub Username <span class="optional">(optional)</span>
+        </label>
 
-<select id="role" required>
+        <input
+          type="text"
+          id="github"
+          placeholder="e.g. aadya123"
+        >
 
-<option value="">
-Select Target Role
-</option>
+        <small>
+          Only relevant for technical roles like Engineering or Data Science
+        </small>
 
-<option>
-AI Engineer
-</option>
+      </div>
 
-<option>
-ML Engineer
-</option>
+      <!-- RESUME -->
+      <input
+        type="file"
+        id="resume"
+        accept=".pdf"
+        required
+      >
 
-<option>
-Data Scientist
-</option>
+      <!-- BUTTON -->
+      <button type="submit">
+        Analyze My Career 💀
+      </button>
 
-<option>
-Backend Developer
-</option>
+    </form>
 
-<option>
-Frontend Developer
-</option>
+    <div id="status"></div>
+    <div id="report"></div>
 
-<option>
-Full Stack Developer
-</option>
-
-</select>
-
-<input
-type="file"
-id="resume"
-accept=".pdf"
-required>
-
-<button type="submit">
-
-Analyze My Career 💀
-
-</button>
-
-</form>
-
-<div id="status"></div>
-
-<div id="report"></div>
-
-</div>
-
+  </div>
 </div>
 
 <script src="script.js"></script>
 
 </body>
-
 </html>

@@ -1,6 +1,10 @@
 document
-.getElementById("careerForm")
+.getElementById(
+"careerForm"
+)
+
 .addEventListener(
+
 "submit",
 
 async (e)=>{
@@ -20,49 +24,76 @@ document.getElementById(
 status.innerHTML =
 "Analyzing Resume... ⏳";
 
-reportDiv.innerHTML = "";
+reportDiv.innerHTML =
+"";
 
 const formData =
 new FormData();
 
 formData.append(
+
 "name",
+
 document.getElementById(
 "name"
 ).value
+
 );
 
 formData.append(
+
 "email",
+
 document.getElementById(
 "email"
 ).value
+
 );
 
 formData.append(
+
 "github",
+
 document.getElementById(
 "github"
 ).value
+
 );
 
 formData.append(
+
+"field",
+
+document.getElementById(
+"field"
+).value
+
+);
+
+formData.append(
+
 "role",
+
 document.getElementById(
 "role"
 ).value
+
 );
 
 formData.append(
+
 "resume",
+
 document.getElementById(
 "resume"
 ).files[0]
+
 );
 
 try{
 
 const response =
+
 await fetch(
 
 "https://lolworld.app.n8n.cloud/webhook-test/career-analysis",
@@ -78,30 +109,44 @@ body:formData
 );
 
 const result =
+
 await response.json();
 
 status.innerHTML =
+
 "Analysis Complete ✅";
 
 const formattedReport =
+
 result.report
-.replaceAll("\\n","\n");
+
+.replaceAll(
+"\\n",
+"\n"
+);
 
 reportDiv.innerHTML =
+
 formattedReport;
 
 }
 
 catch(error){
 
-console.error(error);
+console.error(
+error
+);
 
 status.innerHTML =
+
 "Something went wrong ❌";
 
 reportDiv.innerHTML =
+
 "";
 
 }
 
-});
+}
+
+);
